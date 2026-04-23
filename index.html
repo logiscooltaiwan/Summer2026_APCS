@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python × APCS 初級衝刺班｜2026 暑假</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#060d1f;
+  --navy2:#0d1630;
+  --navy3:#121f3d;
+  --blue:#2563eb;
+  --blue-light:#3b82f6;
+  --lime:#a3e635;
+  --lime-dim:#84cc16;
+  --white:#f0f4ff;
+  --muted:#8896b3;
+  --border:#1e2d52;
+  --card:#0d1630;
+}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--white);font-family:'Noto Sans TC',sans-serif;font-weight:400;line-height:1.7;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(12px);background:rgba(6,13,31,.85);border-bottom:1px solid rgba(37,99,235,.15)}
+.nav-logo{font-family:'Outfit',sans-serif;font-size:.92rem;font-weight:700;color:var(--lime);letter-spacing:.01em}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-size:.8rem;color:var(--muted);text-decoration:none;letter-spacing:.04em;transition:.2s}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{background:var(--blue);color:#fff;padding:.45rem 1.2rem;border-radius:6px;font-size:.8rem;font-weight:500;text-decoration:none;transition:.2s;border:none;cursor:pointer}
+.nav-cta:hover{background:var(--blue-light)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:7rem 2rem 4rem;position:relative;overflow:hidden}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(37,99,235,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,.06) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 40%,black 40%,transparent 100%)}
+.hero-glow{position:absolute;top:20%;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(37,99,235,.18) 0%,transparent 70%);pointer-events:none}
+.hero-content{max-width:900px;margin:0 auto;text-align:center;position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(163,230,53,.1);border:1px solid rgba(163,230,53,.3);color:var(--lime);font-family:'IBM Plex Mono',monospace;font-size:.72rem;padding:.35rem 1rem;border-radius:100px;margin-bottom:2rem;letter-spacing:.06em}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--lime);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero-h1{font-family:'Outfit',sans-serif;font-size:clamp(2.4rem,6vw,4.5rem);font-weight:900;line-height:1.1;letter-spacing:-.01em;margin-bottom:1.5rem}
+.hero-h1 .accent{color:var(--lime)}
+.hero-h1 .accent2{color:var(--blue-light)}
+.hero-sub{font-size:1.05rem;color:var(--muted);max-width:580px;margin:0 auto 2.5rem;line-height:1.8}
+.hero-meta{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem}
+.hero-meta-item{display:flex;flex-direction:column;align-items:center;gap:.25rem}
+.hero-meta-item .label{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.hero-meta-item .value{font-size:1rem;font-weight:700;color:var(--white)}
+.hero-meta-sep{width:1px;background:var(--border);align-self:stretch}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:var(--blue);color:#fff;padding:.85rem 2.2rem;border-radius:8px;font-size:.95rem;font-weight:700;text-decoration:none;transition:.2s;display:inline-block;font-family:'Noto Sans TC',sans-serif;letter-spacing:.04em}
+.btn-primary:hover{background:var(--blue-light);transform:translateY(-1px)}
+.btn-secondary{background:transparent;color:var(--white);padding:.85rem 2.2rem;border-radius:8px;font-size:.95rem;font-weight:500;text-decoration:none;border:1px solid var(--border);transition:.2s;display:inline-block;letter-spacing:.04em}
+.btn-secondary:hover{border-color:var(--blue-light);color:var(--blue-light)}
+
+50%{transform:translateX(-50%) translateY(6px)}}
+
+
+/* STATS */
+.stats{padding:5rem 2rem;background:var(--navy2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stats-inner{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2rem}
+.stat-item{text-align:center}
+.stat-num{font-family:'Outfit',sans-serif;font-size:3rem;font-weight:800;color:var(--lime);line-height:1}
+.stat-unit{font-family:'IBM Plex Mono',monospace;font-size:.85rem;color:var(--blue-light);margin-left:.25rem}
+.stat-desc{font-size:.82rem;color:var(--muted);margin-top:.5rem;line-height:1.6}
+
+/* SECTION */
+section{padding:6rem 2rem}
+.section-inner{max-width:1000px;margin:0 auto}
+.section-tag{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--blue-light);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.75rem;display:block}
+.section-h2{font-family:'Outfit',sans-serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;line-height:1.2;letter-spacing:-.01em;margin-bottom:1rem}
+.section-h2 em{font-style:normal;color:var(--lime)}
+.section-desc{color:var(--muted);font-size:.95rem;max-width:540px;line-height:1.8;margin-bottom:3rem}
+
+/* FOR WHOM */
+.whom-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.whom-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;display:flex;gap:1rem;transition:.25s;cursor:default}
+.whom-card:hover{border-color:rgba(37,99,235,.5);background:var(--navy3)}
+.whom-icon{width:40px;height:40px;background:rgba(163,230,53,.1);border:1px solid rgba(163,230,53,.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.whom-body h4{font-size:.9rem;font-weight:700;margin-bottom:.3rem;color:var(--white)}
+.whom-body p{font-size:.8rem;color:var(--muted);line-height:1.6}
+
+/* PHASES */
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:4rem}
+.phase-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.75rem;position:relative;overflow:hidden}
+.phase-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.phase-1::before{background:linear-gradient(90deg,var(--blue),var(--blue-light))}
+.phase-2::before{background:linear-gradient(90deg,#7c3aed,#a855f7)}
+.phase-3::before{background:linear-gradient(90deg,var(--lime-dim),var(--lime))}
+.phase-num{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--muted);letter-spacing:.1em;margin-bottom:.75rem}
+.phase-title{font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.4rem}
+.phase-weeks{font-size:.75rem;color:var(--muted);margin-bottom:1rem;font-family:'IBM Plex Mono',monospace}
+.phase-items{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.phase-items li{font-size:.82rem;color:var(--muted);padding-left:1rem;position:relative;line-height:1.6}
+.phase-items li::before{content:'—';position:absolute;left:0;color:var(--border)}
+
+/* WEEK TABLE */
+.week-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.week-table thead th{padding:1rem 1.25rem;text-align:left;font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.1em;color:var(--muted);border-bottom:1px solid var(--border);font-weight:500}
+.week-table tbody tr{border-bottom:1px solid rgba(30,45,82,.5);transition:.2s}
+.week-table tbody tr:hover{background:rgba(37,99,235,.05)}
+.week-table td{padding:.9rem 1.25rem;vertical-align:top;color:var(--muted)}
+.week-table td:first-child{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--blue-light);font-weight:600;white-space:nowrap}
+.week-table td:nth-child(2){color:var(--white);font-weight:500}
+.week-tag{display:inline-block;padding:.15rem .5rem;border-radius:4px;font-size:.65rem;font-weight:500;margin-left:.5rem;font-family:'IBM Plex Mono',monospace;vertical-align:middle}
+.tag-syntax{background:rgba(59,130,246,.15);color:#93c5fd;border:1px solid rgba(59,130,246,.2)}
+.tag-read{background:rgba(168,85,247,.15);color:#c4b5fd;border:1px solid rgba(168,85,247,.2)}
+.tag-impl{background:rgba(163,230,53,.12);color:#bef264;border:1px solid rgba(163,230,53,.2)}
+
+/* FEATURES */
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.feat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.75rem;transition:.25s}
+.feat-card:hover{border-color:rgba(37,99,235,.4);transform:translateY(-3px)}
+.feat-icon{font-size:1.5rem;margin-bottom:1rem;display:block}
+.feat-h{font-size:.95rem;font-weight:700;margin-bottom:.5rem;color:var(--white)}
+.feat-p{font-size:.8rem;color:var(--muted);line-height:1.7}
+
+/* CTA BANNER */
+.cta-banner{background:linear-gradient(135deg,var(--navy3) 0%,rgba(37,99,235,.15) 100%);border:1px solid rgba(37,99,235,.3);border-radius:16px;padding:3.5rem;text-align:center;position:relative;overflow:hidden;margin-top:4rem}
+.cta-banner::before{content:'';position:absolute;top:-50%;right:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(163,230,53,.08),transparent 70%);pointer-events:none}
+.cta-h{font-family:'Outfit',sans-serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;margin-bottom:.75rem;letter-spacing:-.01em}
+.cta-sub{color:var(--muted);font-size:.9rem;margin-bottom:2rem;line-height:1.8}
+.cta-form{display:flex;gap:.75rem;justify-content:center;max-width:480px;margin:0 auto;flex-wrap:wrap}
+.cta-submit{background:var(--lime-dim);color:#0a1a00;padding:.75rem 1.75rem;border-radius:8px;font-weight:700;font-size:.9rem;border:none;cursor:pointer;transition:.2s;font-family:'Noto Sans TC',sans-serif;white-space:nowrap}
+.cta-submit:hover{background:var(--lime);transform:translateY(-1px)}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:1rem}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;background:none;border:none;color:var(--white);font-size:.9rem;font-weight:500;cursor:pointer;text-align:left;font-family:'Noto Sans TC',sans-serif;gap:1rem}
+.faq-arrow{width:18px;height:18px;border:1.5px solid var(--muted);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.3s;color:var(--muted);font-size:.8rem}
+.faq-item.open .faq-arrow{transform:rotate(45deg);border-color:var(--blue-light);color:var(--blue-light)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .25s;padding:0 1.5rem;font-size:.85rem;color:var(--muted);line-height:1.8}
+.faq-item.open .faq-a{max-height:300px;padding:.25rem 1.5rem 1.25rem}
+
+/* FOOTER */
+
+
+/* COUNTDOWN */
+.countdown{display:flex;gap:1.5rem;justify-content:center;margin-bottom:3rem;flex-wrap:wrap}
+.cd-item{text-align:center;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2);border-radius:10px;padding:.75rem 1.25rem;min-width:72px}
+.cd-num{font-family:'Outfit',sans-serif;font-size:2rem;font-weight:800;color:var(--white);line-height:1}
+.cd-label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:.25rem}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .whom-grid,.phases,.features-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .hero-meta-sep{display:none}
+  .cta-form{flex-direction:column}
+}
+
+
+/* LINE BTN */
+.line-btn{display:inline-flex;align-items:center;background:#06c755;color:#fff;padding:.9rem 2.2rem;border-radius:8px;font-size:1rem;font-weight:700;text-decoration:none;transition:.2s;font-family:'Noto Sans TC',sans-serif;letter-spacing:.04em}
+.line-btn:hover{background:#04a844;transform:translateY(-1px)}
+/* FOOTER */
+footer{padding:0;border-top:1px solid var(--border);background:var(--navy2)}
+.footer-inner{max-width:1100px;margin:0 auto;padding:3.5rem 2rem 0}
+.footer-top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:3rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border)}
+.footer-brand{display:flex;flex-direction:column;gap:1rem}
+.footer-logo-text{font-family:'Outfit',sans-serif;font-size:1.25rem;font-weight:800;color:var(--white);letter-spacing:.01em}
+.footer-tagline{font-size:.84rem;color:var(--muted);line-height:1.7;max-width:280px}
+.footer-social{display:flex;gap:.6rem;margin-top:.25rem}
+.footer-social-btn{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.07);border:1px solid var(--border);color:var(--white);padding:.45rem 1rem;border-radius:6px;font-size:.78rem;font-weight:500;text-decoration:none;transition:.2s}
+.footer-social-btn:hover{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.2)}
+.footer-links-col{display:flex;flex-direction:column;gap:.7rem}
+.footer-col-title{font-size:.8rem;font-weight:700;color:var(--white);margin-bottom:.35rem}
+.footer-links-col a{font-size:.84rem;color:var(--muted);text-decoration:none;transition:.2s}
+.footer-links-col a:hover{color:var(--white)}
+.footer-contact-item{display:flex;align-items:flex-start;gap:.6rem;font-size:.84rem;color:var(--muted);line-height:1.6}
+.footer-contact-icon{font-size:.9rem;flex-shrink:0;margin-top:.1rem}
+.footer-bottom{padding:1.25rem 0;font-size:.72rem;color:var(--muted)}
+@media(max-width:720px){.footer-top{grid-template-columns:1fr 1fr}.footer-brand{grid-column:1/-1}}
+@media(max-width:480px){.footer-top{grid-template-columns:1fr}}
+
+/* ANIMATIONS */
+
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">邏輯酷程式學院</div>
+  <ul class="nav-links">
+    <li><a href="#about">關於課程</a></li>
+    <li><a href="#weeks">課程大綱</a></li>
+    <li><a href="#faq">常見問題</a></li>
+  </ul>
+  <a href="#register" class="nav-cta">立即報名</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-badge">2026 暑假 限額開課</div>
+    <h1 class="hero-h1">
+      學過 Python，<br>
+      還缺一張 <span class="accent">APCS</span><br>
+      <span class="accent2">成績單</span>？
+    </h1>
+    <p class="hero-sub">
+      專為有 Python 基礎的國高中生設計的 9 週衝刺課程<br>
+      語法補強 × 識讀技巧 × 初級實作，一個暑假從「學過」到「考過」
+    </p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="label">課程長度</span>
+        <span class="value">9 堂 / 18 小時</span>
+      </div>
+      <div class="hero-meta-sep"></div>
+      <div class="hero-meta-item">
+        <span class="label">上課時間</span>
+        <span class="value">每週三 19–21 時</span>
+      </div>
+      <div class="hero-meta-sep"></div>
+      <div class="hero-meta-item">
+        <span class="label">適合對象</span>
+        <span class="value">國中 / 高中生</span>
+      </div>
+      <div class="hero-meta-sep"></div>
+      <div class="hero-meta-item">
+        <span class="label">程式語言</span>
+        <span class="value">Python</span>
+      </div>
+    </div>
+    <div class="hero-btns">
+      <a href="#register" class="btn-primary">立即報名 →</a>
+      <a href="#weeks" class="btn-secondary">查看課程大綱</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div><span class="stat-num">60</span><span class="stat-unit">+</span></div>
+      <div class="stat-desc">全台大學校系採計<br>APCS 成績</div>
+    </div>
+    <div class="stat-item">
+      <div><span class="stat-num">7–8</span></div>
+      <div class="stat-desc">頂大 APCS 組入學門檻<br>可降低的學測級分數</div>
+    </div>
+    <div class="stat-item">
+      <div><span class="stat-num">9</span><span class="stat-unit">堂</span></div>
+      <div class="stat-desc">系統化課程設計<br>一個暑假打好基礎</div>
+    </div>
+    <div class="stat-item">
+      <div><span class="stat-num">6</span><span class="stat-unit">次/年</span></div>
+      <div class="stat-desc">APCS 每年考試次數（2026 新制）<br>1、3、6、7、10、11月</div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT / FOR WHOM -->
+<section id="about">
+  <div class="section-inner">
+    <span class="section-tag">Who is this for</span>
+    <h2 class="section-h2">這堂課，<em>適合你的孩子嗎？</em></h2>
+    <p class="section-desc">只要符合下列其中一項，就是這堂課的對象——不需要是程式高手。</p>
+    <div class="whom-grid">
+      <div class="whom-card">
+        <div class="whom-icon">📝</div>
+        <div class="whom-body">
+          <h4>上過 Python 課，但感覺不夠扎實</h4>
+          <p>學了一些但語法混亂、解題思路模糊？課程前四週從常考語法系統補強。</p>
+        </div>
+      </div>
+      <div class="whom-card">
+        <div class="whom-icon">🎯</div>
+        <div class="whom-body">
+          <h4>聽過 APCS，不確定自己能不能考</h4>
+          <p>不需要頂尖程度，初級設計給有基礎者，這堂課幫你評估並準備到位。</p>
+        </div>
+      </div>
+      <div class="whom-card">
+        <div class="whom-icon">🏫</div>
+        <div class="whom-body">
+          <h4>想在大學申請時多一份程式證明</h4>
+          <p>APCS 成績可放進備審資料，是資訊類科系最具說服力的能力指標之一。</p>
+        </div>
+      </div>
+      <div class="whom-card">
+        <div class="whom-icon">☀️</div>
+        <div class="whom-body">
+          <h4>想讓暑假時間真正有產出</h4>
+          <p>每週三晚上 2 小時，其餘時間自由——密度剛好，不會壓力爆表。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHASES -->
+<section style="background:var(--navy2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="section-inner">
+    <span class="section-tag">Course Structure</span>
+    <h2 class="section-h2">三階段<em>循序漸進</em></h2>
+    <p class="section-desc">從語法補強到考試實戰，每一步都有清楚的學習脈絡。</p>
+    <div class="phases">
+      <div class="phase-card phase-1">
+        <div class="phase-num">PHASE 01 · WEEK 1–4</div>
+        <div class="phase-title">語法補強</div>
+        <div class="phase-weeks">Python Syntax Boost</div>
+        <ul class="phase-items">
+          <li>輸入輸出與資料型別</li>
+          <li>條件判斷與迴圈</li>
+          <li>字串與 List 進階操作</li>
+          <li>函式設計與數學應用</li>
+        </ul>
+      </div>
+      <div class="phase-card phase-2">
+        <div class="phase-num">PHASE 02 · WEEK 5–6</div>
+        <div class="phase-title">識讀技巧</div>
+        <div class="phase-weeks">Code Reading Skills</div>
+        <ul class="phase-items">
+          <li>程式追蹤（code tracing）</li>
+          <li>填空與除錯題型</li>
+          <li>Big-O 效能分析</li>
+          <li>觀念題實戰練習</li>
+        </ul>
+      </div>
+      <div class="phase-card phase-3">
+        <div class="phase-num">PHASE 03 · WEEK 7–9</div>
+        <div class="phase-title">初級實作衝刺</div>
+        <div class="phase-weeks">Implementation Practice</div>
+        <ul class="phase-items">
+          <li>標準化解題 SOP</li>
+          <li>陣列模擬與字串處理</li>
+          <li>矩陣操作與方向向量</li>
+          <li>模擬考 + 考場策略</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WEEK TABLE -->
+<section id="weeks">
+  <div class="section-inner">
+    <span class="section-tag">Week by Week</span>
+    <h2 class="section-h2">9 週<em>課程大綱</em></h2>
+    <p class="section-desc">每堂課都包含觀念教學、實戰練習與課後作業，三位一體確保學習紮實。</p>
+    <table class="week-table">
+      <thead>
+        <tr>
+          <th>週次</th>
+          <th>課程主題</th>
+          <th>類型</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Week 01</td>
+          <td>APCS 考試介紹 × Python 輸入輸出複習</td>
+          
+          <td><span class="week-tag tag-syntax">語法</span></td>
+        </tr>
+        <tr>
+          <td>Week 02</td>
+          <td>條件判斷與迴圈補強</td>
+          
+          <td><span class="week-tag tag-syntax">語法</span></td>
+        </tr>
+        <tr>
+          <td>Week 03</td>
+          <td>字串與 List 操作進階</td>
+          
+          <td><span class="week-tag tag-syntax">語法</span></td>
+        </tr>
+        <tr>
+          <td>Week 04</td>
+          <td>函式設計與數學應用</td>
+          
+          <td><span class="week-tag tag-syntax">語法</span></td>
+        </tr>
+        <tr>
+          <td>Week 05</td>
+          <td>程式識讀（一）— 追蹤與填空</td>
+          
+          <td><span class="week-tag tag-read">識讀</span></td>
+        </tr>
+        <tr>
+          <td>Week 06</td>
+          <td>程式識讀（二）— 除錯與效能分析</td>
+          
+          <td><span class="week-tag tag-read">識讀</span></td>
+        </tr>
+        <tr>
+          <td>Week 07</td>
+          <td>初級實作策略（一）— 陣列與搜尋</td>
+          
+          <td><span class="week-tag tag-impl">實作</span></td>
+        </tr>
+        <tr>
+          <td>Week 08</td>
+          <td>初級實作策略（二）— 字串與矩陣</td>
+          
+          <td><span class="week-tag tag-impl">實作</span></td>
+        </tr>
+        <tr>
+          <td>Week 09</td>
+          <td>模擬考 × 考前總整理</td>
+          
+          <td><span class="week-tag tag-impl">實作</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section style="background:var(--navy2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="section-inner">
+    <span class="section-tag">Why Choose Us</span>
+    <h2 class="section-h2">為什麼<em>這堂課不一樣</em></h2>
+    <div class="features-grid">
+      <div class="feat-card">
+        <span class="feat-icon">🎯</span>
+        <div class="feat-h">100% 對齊考試範圍</div>
+        <p class="feat-p">課程內容完全依據 APCS 初級出題方向設計，每週都有歷屆真實考古題練習，讓孩子的準備時間花在刀口上。</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">📐</span>
+        <div class="feat-h">三階段循序銜接</div>
+        <p class="feat-p">語法補強 → 識讀技巧 → 實作解題，每個階段都是下一個的基礎，不跳步驟、不讓學生跟不上。</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">📚</span>
+        <div class="feat-h">精選題庫，對準考試</div>
+        <p class="feat-p">課程使用精選練習題庫，完整涵蓋 APCS 初級考試範圍，並搭配歷屆真實考題，讓孩子的練習每一題都有意義。</p>
+      </div>
+  </div>
+</section>
+
+<!-- CTA / REGISTER -->
+<section id="register">
+  <div class="section-inner">
+    <span class="section-tag">Registration</span>
+    <h2 class="section-h2">現在報名，<em>掌握暑假先機</em></h2>
+    <p class="section-desc">名額有限，額滿截止。點擊下方按鈕加入官方 Line，即可獲得完整課程資訊與報名連結。</p>
+    <div class="cta-banner">
+      <h3 class="cta-h">準備好讓孩子的暑假<br>留下一份真正有用的成果了嗎？</h3>
+      <p class="cta-sub">Python 語法補充 × APCS 初級衝刺班<br>
+      每週三 19:00–21:00 ｜共 9 堂 ｜2026 暑假</p>
+      <div style="text-align:center;margin-top:.5rem">
+        <a href="https://lin.ee/BhxxT5B" target="_blank" class="line-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:.5rem"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.070 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+          加入官方 Line 進行報名
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="background:var(--navy2);border-top:1px solid var(--border)">
+  <div class="section-inner">
+    <span class="section-tag">FAQ</span>
+    <h2 class="section-h2">家長<em>常見問題</em></h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          孩子以前學的 Python 不多，跟得上嗎？
+          <div class="faq-arrow">+</div>
+        </button>
+        <div class="faq-a">可以。課程前四週（Week 1–4）專門針對 APCS 常考語法進行系統補強，從輸入輸出、條件迴圈到字串 List 操作都會重新整理，不假設孩子什麼都會。只要有接觸過 Python 的基本概念，就能跟上課程節奏。</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          APCS 成績對升學真的有幫助嗎？
+          <div class="faq-arrow">+</div>
+        </button>
+        <div class="faq-a">有，且幫助越來越大。目前全台超過 60 所大學校系採計 APCS 成績，台大、陽明交大、清大、成大等頂大資工系均設有「APCS 組」，採計後入學門檻可比一般組低 7–8 個學測級分。APCS 成績也可以放進學習歷程備審資料，讓孩子的備審更有說服力。</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          9 週課程結束後，孩子能達到什麼程度？
+          <div class="faq-arrow">+</div>
+        </button>
+        <div class="faq-a">目標是能夠報考 APCS 初級，並取得 1–2 級分的實作成績。程度較好的學生（特別是本來 Python 就較熟悉者）有機會挑戰 2–3 級分。觀念題（程式識讀）方面，課程會教完所有識讀題型的解題技巧。</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          課程結束後，孩子什麼時候可以去考試？
+          <div class="faq-arrow">+</div>
+        </button>
+        <div class="faq-a">2026 年起 APCS 新制每年舉辦 6 次考試（1、3、6、7、10、11月），機會比以前多一倍。暑假課程結束後，建議目標 2026 年 10 月或 11 月的考試，課後還有時間在 ZeroJudge 上繼續刷題鞏固實力。若第一次考試未達目標，也可在 3 個月內再次報考。</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          上課使用什麼程式語言？需要事先安裝什麼嗎？
+          <div class="faq-arrow">+</div>
+        </button>
+        <div class="faq-a">全程使用 Python，這也是 APCS 初級實作題最建議的作答語言。上課前只需完成基本程式環境設定，第一堂課老師會帶領同學一步一步完成，不熟悉的學生也沒問題。</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          請問費用與上課地點？
+          <div class="faq-arrow">+</div>
+        </button>
+        <div class="faq-a">上課地點：邏輯酷程式學院 光復旗艦校（國父紀念館捷運站 1 號出口旁）。費用請加入官方 Line 後私訊我們，我們將提供完整的費用資訊。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo-text">邏輯酷程式學院</div>
+        <p class="footer-tagline">培養下一代的運算思維與程式解題能力</p>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/LogiscoolTaiwan/?locale=zh_TW" target="_blank" class="footer-social-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg> Facebook
+          </a>
+          <a href="https://www.instagram.com/logiscool_taiwan/" target="_blank" class="footer-social-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg> Instagram
+          </a>
+        </div>
+      </div>
+      <div class="footer-links-col">
+        <div class="footer-col-title">快速連結</div>
+        <a href="#about">關於課程</a>
+        <a href="#weeks">課程大綱</a>
+        <a href="#register">立即報名</a>
+        <a href="#faq">常見問題</a>
+        <a href="https://logiscooltaiwan.github.io/SummerCamp2026/" target="_blank">2026 暑期夏令營</a>
+      </div>
+      <div class="footer-links-col">
+        <div class="footer-col-title">聯絡資訊</div>
+        <div class="footer-contact-item">
+          <span class="footer-contact-icon">📞</span>
+          <span>02-2773-9386</span>
+        </div>
+        <div class="footer-contact-item">
+          <span class="footer-contact-icon">📍</span>
+          <span>臺北市忠孝東路四段333號5樓<br>（國父紀念館捷運站 1 號出口旁）</span>
+        </div>
+        <a href="https://lin.ee/BhxxT5B" target="_blank" class="footer-social-btn" style="margin-top:.25rem;background:#06c755;border-color:#06c755;color:#fff">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.630 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.070 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg> 官方 Line 諮詢
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 邏輯酷程式學院 · 版權所有
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(btn){
+  const item=btn.closest('.faq-item');
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!isOpen)item.classList.add('open');
+}
+
+</script>
+</body>
+</html>
